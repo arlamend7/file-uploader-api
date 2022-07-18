@@ -1,5 +1,6 @@
 ﻿using Integracao.Domain.Base.Repositories;
 using Integracao.Infra.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Integracao.Controllers
@@ -17,9 +18,17 @@ namespace Integracao.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Get()
         {
-            _beneficiarioRepository.Insert();
+            return Ok();
+        }
+
+        [HttpPost("import")]
+        [AllowAnonymous]
+        public IActionResult Insert([FromForm] string fileName)
+        {
+            Stream file = Request.Form.Files[0].OpenReadStream();
             return Ok();
         }
     }
