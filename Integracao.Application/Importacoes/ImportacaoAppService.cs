@@ -1,19 +1,25 @@
-﻿using Integracao.Conversores;
+﻿using Integracao.Application.Importacoes.Interfaces;
+using Integracao.Conversores;
 using Integracao.Domain.Base.Repositories;
 using Integracao.Domain.Beneficiarios.Entities;
+using Integracao.Domain.Eventos.Entities;
 using Integracao.Domain.Operadoras.Enums;
+using Integracao.Infra;
 
 namespace Integracao.Application.Importacoes
 {
-    public class ImportacaoAppService
+    public class ImportacaoAppService : IImportacaoAppService
     {
 
         private readonly IManipulationRepository _manipulationRepository;
         private readonly ConverterFactory _converterFactory;
-        public ImportacaoAppService(ConverterFactory converterFactory, IManipulationRepository manipulationRepository)
+        private readonly RepositoryFactory _repositoryFactory;
+
+        public ImportacaoAppService(RepositoryFactory repositoryFactory, ConverterFactory converterFactory, IManipulationRepository manipulationRepository)
         {
             _converterFactory = converterFactory;
             _manipulationRepository = manipulationRepository;
+            _repositoryFactory = repositoryFactory;
         }
 
         public void ImportarArquivos(string nomeArquivo, Stream arquivo, OperadorasEnum operadora)
@@ -22,7 +28,8 @@ namespace Integracao.Application.Importacoes
             IEnumerable<Type> types = new List<Type>
             {
                 typeof(Beneficiario),
-             
+                typeof(Evento),
+
             };
 
             var objetos = _converterFactory
@@ -33,7 +40,8 @@ namespace Integracao.Application.Importacoes
             foreach (var type in types)
             {
                 var beneficiarios = objetos.Where(x => type.IsAssignableTo(x.GetType()));
-                _manipulationRepository.Insert<Beneficiario>(beneficiarios as Beneficiario);
+                
+
             }
         }
     }

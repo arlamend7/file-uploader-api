@@ -1,4 +1,6 @@
-﻿using Integracao.Domain.Base.Repositories;
+﻿using Integracao.Application.Importacoes.Interfaces;
+using Integracao.Domain.Base.Repositories;
+using Integracao.Domain.Operadoras.Enums;
 using Integracao.Infra.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,10 +13,12 @@ namespace Integracao.Controllers
     {
         IManipulationRepository _manipulationRepository;
         BeneficiarioRepository _beneficiarioRepository;
-        public IntegracaoController(IManipulationRepository manipulationRepository, BeneficiarioRepository beneficiarioRepository)
+        IImportacaoAppService _importacaoAppService;
+        public IntegracaoController(IManipulationRepository manipulationRepository, BeneficiarioRepository beneficiarioRepository, IImportacaoAppService importacaoAppService)
         {
             _manipulationRepository = manipulationRepository;
             _beneficiarioRepository = beneficiarioRepository;
+            _importacaoAppService = importacaoAppService;
         }
 
         [HttpGet]
@@ -37,7 +41,7 @@ namespace Integracao.Controllers
         public IActionResult Insert([FromForm] string fileName)
         {
             Stream file = Request.Form.Files[0].OpenReadStream();
-
+            _importacaoAppService.ImportarArquivos(fileName, file, OperadorasEnum.SulAmerica);
             return Ok();
         }
     }
