@@ -19,6 +19,22 @@ namespace Integracao.Infra.Mappings
             Map(x => x.Carteirinha);
             Map(x => x.Empresa);
             Map(x => x.RazaoSocial);
+            Map(x => x.Codigo);
+            Map(x => x.LocalEmpresa);
+            Map(x => x.Produto);
+            Map(x => x.Plano);
+            Map(x => x.Setor);
+            Map(x => x.DataMaxPermanencia);
+            Map(x => x.DataInativo);
+            Map(x => x.Remido);
+            Map(x => x.TipoBeneficiario);
+            Map(x => x.TipoSegurado);
+            Map(x => x.Permanencia);
+            Map(x => x.InicioPlano);
+            Map(x => x.FimPlano);
+            Map(x => x.Acomodacao);
+            Map(x => x.GrupoFamiliar);
+        
 
         }
     }

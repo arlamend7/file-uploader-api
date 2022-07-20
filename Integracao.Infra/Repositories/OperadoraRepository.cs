@@ -16,7 +16,7 @@ namespace Integracao.Infra.Repositories
             {
                 SqlCommand sqlCommand = new SqlCommand(qry, conn);
 
-                try
+                try   
                 {
 
                 }

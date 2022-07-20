@@ -1,5 +1,4 @@
 ﻿using Integracao.Conversores;
-using Integracao.Domain.Apolices.Entities;
 using Integracao.Domain.Base.Repositories;
 using Integracao.Domain.Beneficiarios.Entities;
 using Integracao.Domain.Operadoras.Enums;
@@ -23,7 +22,7 @@ namespace Integracao.Application.Importacoes
             IEnumerable<Type> types = new List<Type>
             {
                 typeof(Beneficiario),
-                typeof(Apolice),
+             
             };
 
             var objetos = _converterFactory

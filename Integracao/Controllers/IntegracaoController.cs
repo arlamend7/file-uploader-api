@@ -21,14 +21,23 @@ namespace Integracao.Controllers
         [AllowAnonymous]
         public IActionResult Get()
         {
+            
             return Ok();
         }
+
+        [HttpPost("validate")]
+        public IActionResult Validate([FromForm] string fileName)
+        {
+            return Ok();
+        }
+
 
         [HttpPost("import")]
         [AllowAnonymous]
         public IActionResult Insert([FromForm] string fileName)
         {
             Stream file = Request.Form.Files[0].OpenReadStream();
+
             return Ok();
         }
     }

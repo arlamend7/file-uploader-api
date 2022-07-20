@@ -5,7 +5,7 @@ namespace Integracao.Infra.Mappings
 {
     public class EventosMap : ClassMap<Evento>
     {
-        public EventosMap()
+        public EventosMap() 
         {
             Table("Eventos");
             Id(x => x.Id).Column("EventoId");
@@ -16,7 +16,6 @@ namespace Integracao.Infra.Mappings
             Map(x => x.CrmResponsavel);
             Map(x => x.CrmSolicitante);
             Map(x => x.CrmExecutante);
-            References(x => x.Servico).Column("ServicoId");
             Map(x => x.Atendimento);
             Map(x => x.CategoriaAtendimento);
             Map(x => x.DescricaoPosicaoPrestador);
@@ -31,6 +30,12 @@ namespace Integracao.Infra.Mappings
             Map(x => x.QtdServicoPago);
             Map(x => x.DescInternacao);
             Map(x => x.IdentificadorPagamento);
+            References(x => x.Operadora).Column("OperadoraId");
+            Map(x => x.CodigoServicoPrincipal);
+            Map(x => x.DescricaoServicoPrincipal);
+            Map(x => x.CodigoServico);
+            Map(x => x.DescricaoServico);
+            Map(x => x.CodigoBeneficiario);
 
         }
     }

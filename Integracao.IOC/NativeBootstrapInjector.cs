@@ -15,7 +15,6 @@ namespace Integracao.IOC
     {
         public static void Configure(IServiceCollection services, IConfiguration configuration)
         {
-            var path = configuration.GetSection("DatabaseConn").Exists();
 
             var conn = configuration.GetSection("ConnectionStrings:SQLite").Value;
 
