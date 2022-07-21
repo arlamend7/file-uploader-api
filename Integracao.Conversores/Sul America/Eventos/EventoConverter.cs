@@ -2,6 +2,7 @@
 using Integracao.Conversores.Base.Exceptions;
 using Integracao.Core.Base.Entities;
 using Integracao.Domain.Eventos.Entities;
+using Integracao.Domain.Servicos.Entidades;
 
 namespace Integracao.Conversores.Sul_America.Eventos
 {
@@ -38,9 +39,13 @@ namespace Integracao.Conversores.Sul_America.Eventos
 
         private static IEnumerable<EntityBase> ConvertLine(string line)
         {
-            IEnumerable<string> columns = line.Replace(", 12:00:00 AM", "").Split(",").Select(x => x.Replace('"', ' ').Replace(@"\", "").Trim());
+            IEnumerable<string> columns = line.Replace(", 12:00:00 AM", "")
+                                              .Split(",")
+                                              .Select(x => x.Replace('"', ' ')
+                                                            .Replace(@"\", "")
+                                              .Trim());
 
-            var evento = new ColumnsConverter<Evento>(columns);
+            var evento = new ColumnsConverter<Servico>(columns);
 
             return new List<EntityBase>() { };
         }
