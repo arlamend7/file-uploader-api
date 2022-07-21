@@ -29,7 +29,7 @@ namespace Integracao.Infra.Repositories
             $"'{x.Codigo}'," +
             $"'{(char)x.Remido}'," +
             $"'{(char)x.IsDependente}'," +
-            $"'{x.CPFTitular}'"));
+            $"'{x.CPFTitular}')"));
 
               _connection.Open();
             var transaction = _connection.BeginTransaction();

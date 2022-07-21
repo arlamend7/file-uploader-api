@@ -49,7 +49,7 @@ namespace Integracao.Infra.Repositories
             $"'{x.NumeroLote}'," +
             $"'{x.TipoGuia}'," +
             $"'{x.Servico.Codigo}'," +
-            $"'{x.Operadora.Codigo}'"));
+            $"'{x.Operadora.Codigo}')"));
 
              _connection.Open();
             var transaction = _connection.BeginTransaction();

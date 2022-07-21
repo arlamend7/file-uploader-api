@@ -16,9 +16,9 @@ namespace Integracao.Infra.Repositories
             var planosList = planos as IEnumerable<Plano>;
 
             qry += string.Join(",\n", planosList.Select(x =>
-                 $"'{x.Operadora.Codigo}'," +
+                 $"('{x.Operadora.Codigo}'," +
                  $"'{x.Descricao}'," +
-                 $"'{x.Codigo}'"));
+                 $"'{x.Codigo}')"));
 
             _connection.Open();
             var transaction = _connection.BeginTransaction();
@@ -40,6 +40,8 @@ namespace Integracao.Infra.Repositories
                 throw;
             }
         }
+
+ 
 
     }
 }

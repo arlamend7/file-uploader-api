@@ -31,6 +31,7 @@ namespace Integracao.IOC
 
             //services.AddAutoMapper(typeof(PeopleProfile).GetTypeInfo().Assembly);
             services.AddScoped<IManipulationRepository, ManipulationRepository>();
+            services.AddScoped<PlanoRepository>();
             services.AddScoped(typeof(IQueryRepository), typeof(QueryRepository));
             services.AddScoped(typeof(IImportacaoAppService), typeof(ImportacaoAppService));
             services.AddScoped<SulAmericaConverter>();
