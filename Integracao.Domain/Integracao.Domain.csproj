@@ -9,4 +9,33 @@
     <ProjectReference Include="..\Integracao.Core\Integracao.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Importacoes\" />
+    <None Remove="Importacoes\Entities\" />
+    <None Remove="Planos\" />
+    <None Remove="Planos\Entidades\" />
+    <None Remove="Beneficiarios\Enumeradores\" />
+    <None Remove="Base\Enumeradores\" />
+    <None Remove="Servicos\" />
+    <None Remove="Servicos\Entidades\" />
+    <None Remove="Usuarios\" />
+    <None Remove="Usuarios\Entidades\" />
+    <None Remove="Importacoes\Enumeradores\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Importacoes\" />
+    <Folder Include="Importacoes\Entities\" />
+    <Folder Include="Planos\" />
+    <Folder Include="Planos\Entidades\" />
+    <Folder Include="Beneficiarios\Enumeradores\" />
+    <Folder Include="Base\Enumeradores\" />
+    <Folder Include="Servicos\" />
+    <Folder Include="Servicos\Entidades\" />
+    <Folder Include="Usuarios\" />
+    <Folder Include="Usuarios\Entidades\" />
+    <Folder Include="Importacoes\Enumeradores\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Importacoes\Entities\ArquivoImportacao.cs" />
+  </ItemGroup>
 </Project>

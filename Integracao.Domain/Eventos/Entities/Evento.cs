@@ -1,13 +1,12 @@
 ﻿using Integracao.Domain.Eventos.Enums;
 using Integracao.Core.Base.Entities;
 using Integracao.Domain.Operadoras.Entities;
-using Integracao.Domain.Beneficiarios.Entities;
 
 namespace Integracao.Domain.Eventos.Entities
 {
     public class Evento : EntityBase
     {
-        public virtual string IdentificadorOperadora { get; set; }
+        public virtual string IdentificadorExterno { get; set; }
         public virtual string NomePrestador { get; set; }
         public virtual string CnpjPrestador { get; set; }
         public virtual string PrestadorPrincipal { get; set; }
@@ -35,39 +34,9 @@ namespace Integracao.Domain.Eventos.Entities
         public virtual string DescricaoServico { get; set; }
         public virtual string CodigoBeneficiario { get; set; }
 
-        protected Evento()
+        public Evento()
         {
 
-        }
-
-        public Evento(string identificadorOperadora, string nomePrestador, string cnpjPrestador, string prestadorPrincipal, string crmResponsavel, string crmSolicitante, string crmExecutante, AtendimentoEnum? atendimento, string categoriaAtendimento, string descricaoPosicaoPrestador, decimal? valorApresentado, decimal? valorPago, decimal? valorCoparticipacao, decimal? valorEmpresa, decimal? valorNaoReembolsado, DateTime? dataAtendimento, DateTime? dataInternacao, int? qtdServicoCobrado, int? qtdServicoPago, string descInternacao, string identificadorPagamento, Operadora operadora, string codigoServicoPrincipal, string descricaoServicoPrincipal, string codigoServico, string descricaoServico)
-        {
-            IdentificadorOperadora = identificadorOperadora;
-            NomePrestador = nomePrestador;
-            CnpjPrestador = cnpjPrestador;
-            PrestadorPrincipal = prestadorPrincipal;
-            CrmResponsavel = crmResponsavel;
-            CrmSolicitante = crmSolicitante;
-            CrmExecutante = crmExecutante;
-            Atendimento = atendimento;
-            CategoriaAtendimento = categoriaAtendimento;
-            DescricaoPosicaoPrestador = descricaoPosicaoPrestador;
-            ValorApresentado = valorApresentado;
-            ValorPago = valorPago;
-            ValorCoparticipacao = valorCoparticipacao;
-            ValorEmpresa = valorEmpresa;
-            ValorNaoReembolsado = valorNaoReembolsado;
-            DataAtendimento = dataAtendimento;
-            DataInternacao = dataInternacao;
-            QtdServicoCobrado = qtdServicoCobrado;
-            QtdServicoPago = qtdServicoPago;
-            DescInternacao = descInternacao;
-            IdentificadorPagamento = identificadorPagamento;
-            Operadora = operadora;
-            CodigoServicoPrincipal = codigoServicoPrincipal;
-            DescricaoServicoPrincipal = descricaoServicoPrincipal;
-            CodigoServico = codigoServico;
-            DescricaoServico = descricaoServico;
         }
     }
 }

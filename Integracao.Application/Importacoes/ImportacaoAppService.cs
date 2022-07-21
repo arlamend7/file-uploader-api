@@ -1,44 +1,35 @@
 ﻿using Integracao.Application.Importacoes.Interfaces;
 using Integracao.Conversores;
-using Integracao.Domain.Base.Repositories;
+using Integracao.Conversores.Base.Entities;
 using Integracao.Domain.Beneficiarios.Entities;
-using Integracao.Domain.Eventos.Entities;
+using Integracao.Domain.Importacoes.Enumeradores;
 using Integracao.Domain.Operadoras.Enums;
-using Integracao.Infra;
-using System.Linq;
+using Integracao.Domain.Planos.Entidades;
 
 namespace Integracao.Application.Importacoes
 {
     public class ImportacaoAppService : IImportacaoAppService
     {
 
-        private readonly IManipulationRepository _manipulationRepository;
         private readonly ConverterFactory _converterFactory;
 
-        public ImportacaoAppService(ConverterFactory converterFactory, IManipulationRepository manipulationRepository)
+        public ImportacaoAppService(ConverterFactory converterFactory)
         {
             _converterFactory = converterFactory;
-            _manipulationRepository = manipulationRepository;
         }
 
-        public void ImportarArquivos(string nomeArquivo, Stream arquivo, OperadorasEnum operadora)
+        public FileConverterResult ImportarArquivos(ClasseArquivoEnum nomeArquivo, Stream arquivo, OperadorasEnum operadora)
         {
-
-            IEnumerable<Type> types = new List<Type>
-            {
-                typeof(Beneficiario),
-                typeof(Evento),
-            };
-
-            var objetos = _converterFactory
+            FileConverterResult result = _converterFactory
                                 .Config(operadora)
                                 .IdentificaArquivo(nomeArquivo)
-                                .Invoke(arquivo);
+                                .Invoke(arquivo, out IEnumerable<Type> types);
 
-            foreach (var type in types)
-            {
-                var beneficiarios = objetos.Sucessos.Where(x => type.IsAssignableTo(x.GetType()));
-            }
+            var planos = result.Get<Plano>();
+            var beneficiarios = result.Get<Beneficiario>();
+            var beneficiarioPlanos = result.Get<BeneficiarioPlano>();
+
+            return result;
         }
     }
 }

@@ -26,30 +26,14 @@ namespace Integracao.Infra.Repositories
             qry += string.Join(",\n", beneficiariosList.Select(x =>
             $"('{x.DataNascimento.ToString("yyyy-MM-dd HH:mm:ssss")}'," +
             $"'{x.Sexo}'," +
-            $"'{x.CodigoParentesco}'," +
+            $"'{(int)x.Parentesco}'," +
             $"'{x.NomeDaMae}'," +
             $"'{x.Nome}'," +
             $"'{x.NumeroCNS}'," +
             $"'{x.CPF}'," +
-            $"'{x.Carteirinha}'," +
-            $"'{x.Empresa}'," +
-            $"'{x.RazaoSocial}'," +
             $"'{x.Codigo}'," +
-            $"'{x.LocalEmpresa}'," +
-            $"'{x.Produto}'," +
-            $"'{x.CodigoPlano}'," +
-            $"'{x.CodigoSetor}'," +
-            $"'{x.DataMaxPermanencia}'," +
-            $"'{x.DataInativo}'," +
             $"'{x.Remido}'," +
-            $"'{x.TipoBeneficiario}'," +
-            $"'{x.TipoSegurado}'," +
-            $"'{x.DescricaoPermanencia}'," +
-            $"'{x.InicioPlano}'," +
-            $"'{x.FimPlano}'," +
-            $"'{x.Acomodacao}'," +
-            $"'{x.GrupoFamiliar}'," +
-            $"'{x.LocalEmpresa}')"));
+            $"'{(char)x.IsDependente}'"));
 
 
             try

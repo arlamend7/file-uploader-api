@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using Integracao.Conversores.Base.Exceptions;
 
 namespace Integracao.Conversores.Base.Entities
 {
@@ -32,6 +33,12 @@ namespace Integracao.Conversores.Base.Entities
         public ColumnsConverter<T> Convert(int columnIndex, Expression<Func<T, char>> prop)
         {
             SetValue(columnIndex, prop, x => x[0]);
+            return this;
+        }
+
+        public ColumnsConverter<T> SetValue<TValue>(Expression<Func<T, TValue>> prop, TValue value)
+        {
+            SetValue(0 ,prop, x => value);
             return this;
         }
 

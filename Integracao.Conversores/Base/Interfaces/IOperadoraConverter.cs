@@ -1,10 +1,11 @@
-﻿using Integracao.Conversores.Base.Entities;
-using Integracao.Core.Base.Entities;
+﻿using Integracao.Conversores.Base.Delegates;
+using Integracao.Domain.Importacoes.Enumeradores;
 
 namespace Integracao.Conversores.Base.Interfaces
 {
+
     public interface IOperadoraConverter
     {
-        Func<Stream, FileConverterResult> IdentificaArquivo(string arquivo);
+        FileConvert IdentificaArquivo(ClasseArquivoEnum arquivo);
     }
 }

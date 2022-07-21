@@ -10,6 +10,11 @@ namespace Integracao.Infra.Repositories
     {
         private readonly SQLiteConnection _connection;
 
+        public EventoRepository(SQLiteConnection connection)
+        {
+            _connection = connection;
+        }
+
         public void Insert(IEnumerable<object> eventos)
         {
             var eventosList = eventos as IEnumerable<Evento>;
@@ -20,7 +25,7 @@ namespace Integracao.Infra.Repositories
                          ,CodigoServico,DescricaoServico,CodigoBeneficiario) \n VALUES ";
 
             qry += string.Join(",\n", eventosList.Select(x =>
-              $"('{x.IdentificadorOperadora}'," +
+              $"('{x.IdentificadorExterno}'," +
               $"'{x.NomePrestador}'," +
               $"'{x.CnpjPrestador}'," +
               $"'{x.PrestadorPrincipal}'," +
@@ -40,7 +45,7 @@ namespace Integracao.Infra.Repositories
               $"'{x.QtdServicoCobrado}'," +
               $"'{x.QtdServicoPago}'," +
               $"'{x.DescInternacao}'," +
-              $"'{x.Operadora.Id}'," +
+              $"'{x.Operadora.Codigo}'," +
               $"'{x.CodigoServicoPrincipal}'," +
               $"'{x.DescricaoServicoPrincipal}'," +
               $"'{x.CodigoServico}'," +

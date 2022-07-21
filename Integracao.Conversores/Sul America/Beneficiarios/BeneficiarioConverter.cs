@@ -1,24 +1,37 @@
 ﻿using System.Globalization;
-using System.Linq.Expressions;
 using Integracao.Conversores.Base.Entities;
+using Integracao.Conversores.Base.Exceptions;
+using Integracao.Core.Base.Entities;
+using Integracao.Domain.Base.Enumeradores;
 using Integracao.Domain.Beneficiarios.Entities;
+using Integracao.Domain.Beneficiarios.Enumeradores;
+using Integracao.Domain.Operadoras.Entities;
+using Integracao.Domain.Planos.Entidades;
 
 namespace Integracao.Conversores.Sul_America.Beneficiarios
 {
     public class BeneficiarioConverter
     {
-        public static FileConverterResult Convert(Stream file)
+        private static readonly List<Type> types = new List<Type>()
+            {
+                typeof(Plano),
+                typeof(Beneficiario),
+                typeof(BeneficiarioPlano),
+            };
+
+        public static FileConverterResult Convert(Stream file, out IEnumerable<Type> types)
         {
-            StreamReader sr = new StreamReader(file);
+            types = BeneficiarioConverter.types;
+            StreamReader sr = new(file);
             string[] lines = sr.ReadToEnd().Split("\n");
 
-            var result = new FileConverterResult();
+            FileConverterResult result = new();
 
-            for (int i = 1; i < lines.Count() - 1; i++)
+            for (int i = 1; i < lines.Length - 1; i++)
             {
                 try
                 {
-                    result.Sucessos.Add(ConvertLine(lines[i]));
+                    result.Sucessos.AddRange(ConvertLine(lines[i], result.Get<Plano>()));
                 }
                 catch (FileConverterColumnException ex)
                 {
@@ -29,42 +42,87 @@ namespace Integracao.Conversores.Sul_America.Beneficiarios
             return result;
         }
 
-        private static Beneficiario ConvertLine(string line)
+        private static IEnumerable<EntityBase> ConvertLine(string line, IEnumerable<Plano> planos)
         {
             IEnumerable<string> columns = line.Replace(", 12:00:00 AM", "").Split("," ).Select(x => x.Replace('"', ' ').Replace(@"\", "").Trim());
 
+            Plano plano = new ColumnsConverter<Plano>(columns) //insert
+                    .Convert(20, x => x.Codigo, long.Parse)
+                    .Convert(21, x => x.Descricao)
+                    .SetValue(x => x.Operadora, Operadora.SulAmerica)
+                    .Result;
 
-            return new ColumnsConverter<Beneficiario>(columns)
-                        .Convert(2, x => x.Empresa)
-                        .Convert(3, x => x.RazaoSocial)
-                        .Convert(4, x => x.Produto)
-                        .Convert(6, x => x.LocalEmpresa)
-                        .Convert(9, x => x.Codigo)
-                        .Convert(10, x => x.GrupoFamiliar, long.Parse)
+            Beneficiario beneficiario =  new ColumnsConverter<Beneficiario>(columns) //update
+                        .Convert(9, x => x.Codigo, long.Parse)
                         .Convert(12, x => x.Nome)
                         .Convert(13, x => x.CPFTitular, long.Parse)
                         .Convert(14, x => x.CPF, long.Parse)
                         .Convert(15, x => x.DataNascimento, value => DateTime.Parse(value, CultureInfo.GetCultureInfo("en-US")))
-                        .Convert(16, x => x.Sexo)
-                        .Convert(17, x => x.CodigoParentesco)
-                        .Convert(18, x => x.DescricaoParentesco)
+                        .Convert(16, x => x.Sexo, x => x.ToUpper() switch
+                        {
+                            "M" => SexoEnum.Masculino,
+                            "F" => SexoEnum.Feminino,
+                            _ => throw new NotImplementedException()
+                        })
+                        .Convert(17, x => x.Parentesco, x => x switch
+                        {
+                            "0" => ParentescoEnum.Titular,
+                            "1" => ParentescoEnum.Conjuge,
+                            "2" => ParentescoEnum.Filhos,
+                            "4" => ParentescoEnum.Companheiros,
+                            _ => throw new NotImplementedException()
+                        })
                         .Convert(19, x => x.NomeDaMae)
-                        .Convert(20, x => x.CodigoPlano)
-                        .Convert(21, x => x.DescricaoPlano)
-                        .Convert(22, x => x.Acomodacao)
-                        .Convert(23, x => x.InicioPlano, value => DateTime.Parse(value, CultureInfo.GetCultureInfo("en-US")))
-                        .Convert(24, x => x.FimPlano, value => DateTime.Parse(value, CultureInfo.GetCultureInfo("en-US")))
-                        .Convert(25, x => x.CodigoPermanencia)
-                        .Convert(26, x => x.DescricaoPermanencia)
-                        .Convert(27, x => x.TipoBeneficiario)
-                        .Convert(28, x => x.TipoSegurado)
-                        .Convert(29, x => x.Remido)
-                        .Convert(30, x => x.DataMaxPermanencia, value => DateTime.Parse(value, CultureInfo.GetCultureInfo("en-US")))
-                        .Convert(31, x => x.DataDemissaoOuAposentadoria, value => DateTime.Parse(value, CultureInfo.GetCultureInfo("en-US")))
-                        .Convert(32, x => x.CodigoSetor, long.Parse)
-                        .Convert(33, x => x.DescricaoSetor)
+                        .Convert(27, x => x.IsDependente, x => x switch
+                        {
+                            "TITULAR" => SimNaoEnum.Nao,
+                            "DEPENDENTE" => SimNaoEnum.Sim,
+                            _ => throw new NotImplementedException()
+                        })
+                        .Convert(29, x => x.Remido, x => x.ToUpper() switch
+                        {
+                            "NAO" => SimNaoEnum.Nao,
+                            "SIM" => SimNaoEnum.Sim,
+                            _ => throw new NotImplementedException()
+                        })
                         .Convert(34, x => x.NumeroCNS, long.Parse)
+                        .SetValue(x => x.Operadora, Operadora.SulAmerica)
                         .Result;
+
+            BeneficiarioPlano beneficiarioPlano = new ColumnsConverter<BeneficiarioPlano>(columns) //update - acredito que nao tenha update
+                    .Convert(0, x => x.NumeroApolice, long.Parse)
+                    .Convert(6, x => x.Cidade)
+                    .Convert(7, x => x.UF)
+                    .Convert(22, x => x.Acomodacao, x => x switch
+                    {
+                        "APARTAMENTO" => TipoAcomodacaoEnum.Apartamento,
+                        "ENFERMARIA" => TipoAcomodacaoEnum.Enfermaria,
+                        _ => throw new NotImplementedException()
+                    })
+                    .Convert(23, x => x.Inicio, value => DateTime.Parse(value, CultureInfo.GetCultureInfo("en-US")))
+                    .Convert(24, x => x.Fim, value => DateTime.Parse(value, CultureInfo.GetCultureInfo("en-US")))
+                    .Convert(28, x => x.IsDemitidoOuAposentado, x => x switch
+                    {
+                        "NORMAL" => SimNaoEnum.Nao,
+                        "DEMITIDO/APOSENTADO" => SimNaoEnum.Sim,
+                        _ => throw new NotImplementedException()
+                    })
+                    .Convert(30, x => x.DataMaxPermanencia, value => DateTime.Parse(value, CultureInfo.GetCultureInfo("en-US")))
+                    .Convert(31, x => x.DataDemissaoOuAposentadoria, value => DateTime.Parse(value, CultureInfo.GetCultureInfo("en-US")))
+                    .SetValue(x => x.Plano, plano)
+                    .SetValue(x => x.Beneficiario, beneficiario)
+                    .Result;
+
+            List<EntityBase> lista =  new()
+            {
+                beneficiario,
+                beneficiarioPlano
+            };
+
+            if (!planos.Any(x => x.Codigo == plano.Codigo)) lista.Add(plano);
+
+            return lista;
+
         }
 
        

@@ -4,7 +4,6 @@ namespace Integracao.Domain.Operadoras.Entities
 {
     public class Operadora : EntityBase
     {
-        public virtual string Codigo { get; set; }
         public virtual string Descricao { get; set; }
 
         protected Operadora()
@@ -12,10 +11,20 @@ namespace Integracao.Domain.Operadoras.Entities
 
         }
 
-        public Operadora(string codigo, string descricao)
+        public Operadora(long codigo, string descricao)
         {
             Codigo = codigo;
             Descricao = descricao;
+        }
+
+        public static Operadora SulAmerica = new SulAmericaOperadora();
+
+        private class SulAmericaOperadora : Operadora
+        {
+            public SulAmericaOperadora() : base(1, "sulamerica")
+            {
+
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using Integracao.Conversores.Base.Exceptions;
 using Integracao.Core.Base.Entities;
 
 namespace Integracao.Conversores.Base.Entities
@@ -13,33 +14,18 @@ namespace Integracao.Conversores.Base.Entities
             Sucessos = new List<EntityBase>();
             Erros = new List<FileConverterLineException>();
         }
-    }
 
-    public class FileConverterLineException : Exception
-    {
-        public int Linha { get; set; }
-        public FileConverterColumnException Coluna { get; set; }
-        public FileConverterLineException(int line, FileConverterColumnException ex) 
+        public IEnumerable<T> Get<T>() where T : EntityBase
         {
-            Linha = line;
-            Coluna = ex;
+            return Sucessos.Where(x => x is T).Select(x => x as T);
+        }
+
+        public IEnumerable<object> Get(Type type)
+        {
+            return Sucessos.Where(x => type.IsAssignableTo(x.GetType()));
         }
     }
-    public class FileConverterColumnException : Exception
-    {
-        public int Coluna { get; set; }
-        public string Value { get; set; }
-        public Type Type { get; set; }
-        public string Propriedade { get; set; }
-        public string TypeName => Type.Name;
 
-        public FileConverterColumnException(int coluna, string propriedade, string value, Type type , Exception exception) : base("conversao para coluna exception",exception)
-        {
-            Coluna = coluna;
-            Type = type;
-            Propriedade = propriedade;
-            Value = value;
-        }
-    }
+  
 }
 

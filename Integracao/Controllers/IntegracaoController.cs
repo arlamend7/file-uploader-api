@@ -1,5 +1,6 @@
 ﻿using Integracao.Application.Importacoes.Interfaces;
 using Integracao.Domain.Base.Repositories;
+using Integracao.Domain.Importacoes.Enumeradores;
 using Integracao.Domain.Operadoras.Enums;
 using Integracao.Infra.Repositories;
 using Microsoft.AspNetCore.Authorization;
@@ -38,11 +39,11 @@ namespace Integracao.Controllers
 
         [HttpPost("import")]
         [AllowAnonymous]
-        public IActionResult Insert([FromForm] string fileName)
+        public IActionResult Insert([FromForm] ClasseArquivoEnum fileName)
         {
             Stream file = Request.Form.Files[0].OpenReadStream();
-            _importacaoAppService.ImportarArquivos(fileName, file, OperadorasEnum.SulAmerica);
-            return Ok();
+            var result = _importacaoAppService.ImportarArquivos(fileName, file, OperadorasEnum.SulAmerica);
+            return Ok(result);
         }
     }
 }

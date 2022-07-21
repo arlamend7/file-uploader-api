@@ -8,8 +8,8 @@ namespace Integracao.Infra.Mappings
         public EventosMap() 
         {
             Table("Eventos");
-            Id(x => x.Id).Column("EventoId");
-            Map(x => x.IdentificadorOperadora);
+            Id(x => x.Codigo).Column("EventoId");
+            Map(x => x.IdentificadorExterno);
             Map(x => x.NomePrestador);
             Map(x => x.CnpjPrestador);
             Map(x => x.PrestadorPrincipal);

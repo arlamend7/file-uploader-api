@@ -9,8 +9,7 @@ namespace Integracao.Infra.Mappings
         public OperadorasMap()
         {
             Table("Operadoras");
-            Id(x => x.Id).Column("OperadoraId");
-            Map(x => x.Codigo).Column("Codigo");
+            Id(x => x.Codigo).Column("OperadoraId");
             Map(x => x.Descricao).Column("Descricao");
         }
     }
