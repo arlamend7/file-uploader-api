@@ -109,8 +109,8 @@ namespace Integracao.Conversores.Sul_America.Beneficiarios
                     })
                     .Convert(30, x => x.DataMaxPermanencia, value => DateTime.Parse(value, CultureInfo.GetCultureInfo("en-US")))
                     .Convert(31, x => x.DataDemissaoOuAposentadoria, value => DateTime.Parse(value, CultureInfo.GetCultureInfo("en-US")))
-                    .SetValue(x => x.Plano, plano)
-                    .SetValue(x => x.Beneficiario, beneficiario)
+                    .SetValue(x => x.CodigoPlano, plano.Codigo)
+                    .SetValue(x => x.CodigoBeneficiario, beneficiario.Codigo)
                     .Result;
 
             List<EntityBase> lista =  new()

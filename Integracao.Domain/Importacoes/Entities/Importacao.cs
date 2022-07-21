@@ -1,16 +1,29 @@
 ﻿using Integracao.Core.Base.Entities;
 using Integracao.Domain.Importacoes.Enumeradores;
 using Integracao.Domain.Operadoras.Entities;
+using Integracao.Domain.Operadoras.Enums;
 
 namespace Integracao.Domain.Importacoes.Entities
 {
 	public class Importacao : EntityBase
 	{
-        public string NomeArquivo { get; set; }
-        public int Tamanho { get; set; }
-        public ClasseArquivoEnum Classe { get; set; }
-        public Operadora Operadora { get; set; }
-        public DateTime InsertDate { get; set; }
+        public Importacao(string nomeArquivo, long tamanho, ClasseArquivoEnum classe, OperadorasEnum operadora)
+        {
+            NomeArquivo = nomeArquivo;
+            Tamanho = tamanho;
+            Classe = classe;
+            Operadora = operadora;
+        }
+
+        protected Importacao()
+        {
+
+        }
+        public virtual string NomeArquivo { get; set; }
+        public virtual long Tamanho { get; set; }
+        public virtual ClasseArquivoEnum Classe { get; set; }
+        public virtual OperadorasEnum Operadora { get; set; }
+        public virtual DateTime InsertDate { get; set; } = DateTime.Now;
     }
 }
 

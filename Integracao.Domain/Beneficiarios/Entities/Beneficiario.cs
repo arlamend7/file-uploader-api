@@ -18,5 +18,18 @@ namespace Integracao.Domain.Beneficiarios.Entities
         public virtual SimNaoEnum Remido { get; set; }
         public virtual SimNaoEnum IsDependente { get; set; }
         public virtual Operadora Operadora { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Beneficiario beneficiario &&
+                beneficiario.Codigo == this.Codigo && beneficiario.Operadora.Codigo == this.Operadora.Codigo;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
     }
+
+ 
 }

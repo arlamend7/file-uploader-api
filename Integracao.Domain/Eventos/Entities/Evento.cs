@@ -9,8 +9,8 @@ namespace Integracao.Domain.Eventos.Entities
 {
     public class Evento : EntityBase
     {
-        public Beneficiario Beneficiario { get; set; }
-        public Plano Plano { get; set; }
+        public virtual string CodigoBeneficiario { get; set; }
+        public virtual string CodigoPlano { get; set; }
         public virtual Operadora Operadora { get; set; }
         public virtual Servico Servico { get; set; }
         public virtual string NomePrestador { get; set; }

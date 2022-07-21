@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Integracao.Core.Base.Entities;
+using System;
 namespace Integracao.Domain.Usuarios.Entidades
 {
-	public class Usuario
+	public class Usuario : EntityBase
 	{
-        public string Nome { get; set; }
-        public string Senha { get; set; }
+        public virtual string Nome { get; set; }
+        public virtual string Senha { get; set; }
 
         public static Usuario UsuarioUnico = new()
         {

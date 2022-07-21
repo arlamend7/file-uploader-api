@@ -2,6 +2,7 @@
 using Integracao.Core.Base.Entities;
 using Integracao.Domain.Base.Enumeradores;
 using Integracao.Domain.Beneficiarios.Enumeradores;
+using Integracao.Domain.Operadoras.Entities;
 using Integracao.Domain.Planos.Entidades;
 
 namespace Integracao.Domain.Beneficiarios.Entities
@@ -17,8 +18,13 @@ namespace Integracao.Domain.Beneficiarios.Entities
         public virtual DateTime? DataDemissaoOuAposentadoria { get; set; }
         public virtual TipoAcomodacaoEnum Acomodacao { get; set; }
         public virtual SimNaoEnum IsDemitidoOuAposentado { get; set; }
-        public virtual Beneficiario Beneficiario { get; set; }
-        public virtual Plano Plano { get; set; }
+        public virtual long CodigoBeneficiario { get; set; }
+        public virtual long CodigoPlano { get; set; }
+        public virtual string CodigoEmpresa { get; set; }
+        public virtual Operadora Operadora { get; set; }
+        public virtual string RazaoSocial { get; set; }
+
+  
     }
 }
 

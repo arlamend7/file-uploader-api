@@ -16,39 +16,38 @@ namespace Integracao.Infra.Repositories
         {
             var beneficiariosList = beneficiarios as IEnumerable<Beneficiario>;
 
-            string qry = @"insert into Beneficiario(DataNascimento,Sexo,CodigoParentesco,
-                           NomeDaMae,Nome,NumeroCNS,CPF,Carteirinha
-                           ,Empresa,RazaoSocial,Codigo,LocalEmpresa
-                           ,Produto,Plano,Setor,DataMaxPermanencia,DataInativo,Remido,
-                           TipoBeneficiario,TipoSegurado,Permanencia,InicioPlano,FimPlano,
-                           Acomodacao,GrupoFamiliar)\n VALUES ";
+            string qry = @"insert into Beneficiario(DataNascimento,Sexo,Parentesco,NomeDaMae,Nome,NumeroCNS,CPF,Codigo,Remido,IsDependente,CPFTitular)\n VALUES ";
 
             qry += string.Join(",\n", beneficiariosList.Select(x =>
             $"('{x.DataNascimento.ToString("yyyy-MM-dd HH:mm:ssss")}'," +
-            $"'{x.Sexo}'," +
+            $"'{(char)x.Sexo}'," +
             $"'{(int)x.Parentesco}'," +
             $"'{x.NomeDaMae}'," +
             $"'{x.Nome}'," +
             $"'{x.NumeroCNS}'," +
             $"'{x.CPF}'," +
             $"'{x.Codigo}'," +
-            $"'{x.Remido}'," +
-            $"'{(char)x.IsDependente}'"));
+            $"'{(char)x.Remido}'," +
+            $"'{(char)x.IsDependente}'," +
+            $"'{x.CPFTitular}'"));
 
+              _connection.Open();
+            var transaction = _connection.BeginTransaction();
 
             try
             {
-                _connection.Open();
 
                 SQLiteCommand command = new SQLiteCommand(qry, _connection);
 
                 var result = command.ExecuteNonQuery();
+                transaction.Commit();
                 _connection.Close();
             }
             catch (Exception)
             {
-
-                throw new NotImplementedException();
+                transaction.Rollback();
+                _connection.Close();
+                throw;
             }
 
 

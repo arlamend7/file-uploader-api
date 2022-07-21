@@ -7,18 +7,17 @@ namespace Integracao.Infra.Mappings
     {
         public EventosMap() 
         {
-            Table("Eventos");
+            Table("Evento");
             Id(x => x.Codigo).Column("EventoId");
-            Map(x => x.IdentificadorExterno);
             Map(x => x.NomePrestador);
-            Map(x => x.CnpjPrestador);
-            Map(x => x.PrestadorPrincipal);
+            Map(x => x.CNPJPrestador);
+            Map(x => x.CNPJPrestadorPrincipal);
             Map(x => x.CrmResponsavel);
             Map(x => x.CrmSolicitante);
             Map(x => x.CrmExecutante);
             Map(x => x.Atendimento);
             Map(x => x.CategoriaAtendimento);
-            Map(x => x.DescricaoPosicaoPrestador);
+            Map(x => x.PosicaoPrestador);
             Map(x=>x.ValorApresentado);
             Map(x => x.ValorPago);
             Map(x => x.ValorCoparticipacao);
@@ -30,12 +29,19 @@ namespace Integracao.Infra.Mappings
             Map(x => x.QtdServicoPago);
             Map(x => x.DescInternacao);
             Map(x => x.IdentificadorPagamento);
+            Map(x => x.CodigoBeneficiario).Column("BeneficiarioId");
+            Map(x => x.CodigoPlano).Column("PlanoId");
+            Map(x => x.CodigoDocumento);
+            Map(x => x.CodigoGrupoEstatico);
+            Map(x => x.NumeroLote);
+            Map(x => x.NumeroGuia);
+            Map(x => x.TipoGuia);
+            
+
+            //References(x => x.Servico).Column("ServicoId");
             References(x => x.Operadora).Column("OperadoraId");
-            Map(x => x.CodigoServicoPrincipal);
-            Map(x => x.DescricaoServicoPrincipal);
-            Map(x => x.CodigoServico);
-            Map(x => x.DescricaoServico);
-            Map(x => x.CodigoBeneficiario);
+
+            
 
         }
     }
