@@ -1,5 +1,4 @@
-﻿using System;
-using Integracao.Core.Base.Entities;
+﻿using Integracao.Core.Base.Entities;
 using Integracao.Domain.Base.Enumeradores;
 using Integracao.Domain.Beneficiarios.Enumeradores;
 using Integracao.Domain.Planos.Entidades;
@@ -9,6 +8,8 @@ namespace Integracao.Domain.Beneficiarios.Entities
 	public class BeneficiarioPlano : EntityBase
 	{
         public virtual long NumeroApolice { get; set; }
+        public virtual string CodigoEmpresa { get; set; }
+        public virtual string RazaoSocial { get; set; }
         public virtual string UF { get; set; }
         public virtual string Cidade { get; set; }
         public virtual DateTime Inicio { get; set; }

@@ -1,3 +1,4 @@
+using System.Globalization;
 using Integracao.IOC;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,9 @@ builder.Services.AddSwaggerGen();
 NativeBootstrapInjector.Configure(builder.Services, builder.Configuration);
 
 var app = builder.Build();
+CultureInfo.DefaultThreadCurrentCulture = CultureInfo.GetCultureInfo("en-us");
+CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.GetCultureInfo("en-us");
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

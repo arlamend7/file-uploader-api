@@ -57,7 +57,7 @@ namespace Integracao.Conversores.Sul_America.Beneficiarios
                         .Convert(12, x => x.Nome)
                         .Convert(13, x => x.CPFTitular, long.Parse)
                         .Convert(14, x => x.CPF, long.Parse)
-                        .Convert(15, x => x.DataNascimento, value => DateTime.Parse(value, CultureInfo.GetCultureInfo("en-US")))
+                        .Convert(15, x => x.DataNascimento, DateTime.Parse)
                         .Convert(16, x => x.Sexo, x => x.ToUpper() switch
                         {
                             "M" => SexoEnum.Masculino,
@@ -91,6 +91,8 @@ namespace Integracao.Conversores.Sul_America.Beneficiarios
 
             BeneficiarioPlano beneficiarioPlano = new ColumnsConverter<BeneficiarioPlano>(columns) //update - acredito que nao tenha update
                     .Convert(0, x => x.NumeroApolice, long.Parse)
+                    .Convert(2, x => x.CodigoEmpresa)
+                    .Convert(3, x => x.RazaoSocial)
                     .Convert(6, x => x.Cidade)
                     .Convert(7, x => x.UF)
                     .Convert(22, x => x.Acomodacao, x => x switch
@@ -99,16 +101,16 @@ namespace Integracao.Conversores.Sul_America.Beneficiarios
                         "ENFERMARIA" => TipoAcomodacaoEnum.Enfermaria,
                         _ => throw new NotImplementedException()
                     })
-                    .Convert(23, x => x.Inicio, value => DateTime.Parse(value, CultureInfo.GetCultureInfo("en-US")))
-                    .Convert(24, x => x.Fim, value => DateTime.Parse(value, CultureInfo.GetCultureInfo("en-US")))
+                    .Convert(23, x => x.Inicio,DateTime.Parse)
+                    .Convert(24, x => x.Fim, value => DateTime.Parse(value))
                     .Convert(28, x => x.IsDemitidoOuAposentado, x => x switch
                     {
                         "NORMAL" => SimNaoEnum.Nao,
                         "DEMITIDO/APOSENTADO" => SimNaoEnum.Sim,
                         _ => throw new NotImplementedException()
                     })
-                    .Convert(30, x => x.DataMaxPermanencia, value => DateTime.Parse(value, CultureInfo.GetCultureInfo("en-US")))
-                    .Convert(31, x => x.DataDemissaoOuAposentadoria, value => DateTime.Parse(value, CultureInfo.GetCultureInfo("en-US")))
+                    .Convert(30, x => x.DataMaxPermanencia, value => DateTime.Parse(value))
+                    .Convert(31, x => x.DataDemissaoOuAposentadoria, value => DateTime.Parse(value))
                     .SetValue(x => x.Plano, plano)
                     .SetValue(x => x.Beneficiario, beneficiario)
                     .Result;
