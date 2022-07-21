@@ -24,7 +24,7 @@ namespace Integracao.Infra.Repositories
                            Acomodacao,GrupoFamiliar)\n VALUES ";
 
             qry += string.Join(",\n", beneficiariosList.Select(x =>
-            $"('{x.DataNascimento.Value.ToString("yyyy-MM-dd HH:mm:ssss")}'," +
+            $"('{x.DataNascimento.ToString("yyyy-MM-dd HH:mm:ssss")}'," +
             $"'{x.Sexo}'," +
             $"'{x.CodigoParentesco}'," +
             $"'{x.NomeDaMae}'," +
@@ -37,14 +37,14 @@ namespace Integracao.Infra.Repositories
             $"'{x.Codigo}'," +
             $"'{x.LocalEmpresa}'," +
             $"'{x.Produto}'," +
-            $"'{x.Plano}'," +
-            $"'{x.Setor}'," +
+            $"'{x.CodigoPlano}'," +
+            $"'{x.CodigoSetor}'," +
             $"'{x.DataMaxPermanencia}'," +
             $"'{x.DataInativo}'," +
             $"'{x.Remido}'," +
             $"'{x.TipoBeneficiario}'," +
             $"'{x.TipoSegurado}'," +
-            $"'{x.Permanencia}'," +
+            $"'{x.DescricaoPermanencia}'," +
             $"'{x.InicioPlano}'," +
             $"'{x.FimPlano}'," +
             $"'{x.Acomodacao}'," +

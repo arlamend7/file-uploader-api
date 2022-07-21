@@ -9,4 +9,10 @@
     <ProjectReference Include="..\Integracao.Domain\Integracao.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Base\Entities\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Base\Entities\" />
+  </ItemGroup>
 </Project>

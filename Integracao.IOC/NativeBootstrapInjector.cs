@@ -1,4 +1,8 @@
-﻿using Integracao.Domain.Base.Repositories;
+﻿using Integracao.Application.Importacoes;
+using Integracao.Application.Importacoes.Interfaces;
+using Integracao.Conversores;
+using Integracao.Conversores.Sul_America;
+using Integracao.Domain.Base.Repositories;
 using Integracao.Infra.Base.Repository;
 using Integracao.Infra.DatabaseConfig;
 using Integracao.Infra.Mappings;
@@ -28,6 +32,9 @@ namespace Integracao.IOC
             //services.AddAutoMapper(typeof(PeopleProfile).GetTypeInfo().Assembly);
             services.AddScoped<IManipulationRepository, ManipulationRepository>();
             services.AddScoped(typeof(IQueryRepository), typeof(QueryRepository));
+            services.AddScoped(typeof(IImportacaoAppService), typeof(ImportacaoAppService));
+            services.AddScoped<SulAmericaConverter>();
+            services.AddScoped<ConverterFactory>();
 
 
         }

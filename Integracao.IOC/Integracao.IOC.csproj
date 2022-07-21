@@ -16,6 +16,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Integracao.Infra\Integracao.Infra.csproj" />
+    <ProjectReference Include="..\Integracao.Application\Integracao.Application.csproj" />
+    <ProjectReference Include="..\Integracao.Conversores\Integracao.Conversores.csproj" />
+    <ProjectReference Include="..\Integracao.Core\Integracao.Core.csproj" />
+    <ProjectReference Include="..\Integracao.Domain\Integracao.Domain.csproj" />
   </ItemGroup>
 
 </Project>

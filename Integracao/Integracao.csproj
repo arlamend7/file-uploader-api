@@ -8,6 +8,7 @@
     <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'Integracao.Apolices' " />
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.14.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
@@ -16,6 +17,9 @@
   <ItemGroup>
     <ProjectReference Include="..\Integracao.Domain\Integracao.Domain.csproj" />
     <ProjectReference Include="..\Integracao.IOC\Integracao.IOC.csproj" />
+    <ProjectReference Include="..\Integracao.Application\Integracao.Application.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
   </ItemGroup>
 
 </Project>
