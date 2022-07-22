@@ -13,11 +13,11 @@ namespace Integracao.Conversores
         }
 
         //enum de operadoras
-        public IOperadoraConverter Config(OperadorasEnum operadora)
+        public IOperadoraConverter Config(OperadoraEnum operadora)
         {
             return (IOperadoraConverter)_serviceProvider.GetService(operadora switch
             {
-                OperadorasEnum.SulAmerica => typeof(SulAmericaConverter),
+                OperadoraEnum.SulAmerica => typeof(SulAmericaConverter),
               
                 _ => throw new NotImplementedException()
             });

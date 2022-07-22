@@ -1,13 +1,23 @@
-﻿using System;
-using Integracao.Core.Base.Entities;
+﻿using Integracao.Core.Base.Entities;
 using Integracao.Domain.Operadoras.Entities;
 
 namespace Integracao.Domain.Planos.Entidades
 {
-	public class Plano : EntityBase
+    public class Plano : EntityBase
 	{
-        public Operadora Operadora { get; set; }
-        public string Descricao { get; set; }
+        public virtual Operadora Operadora { get; set; }
+        public virtual string Descricao { get; set; }
+
+
+        public override bool Equals(object obj)
+        {
+            return obj is Plano plano &&
+              plano.Codigo == this.Codigo && plano.Operadora.Codigo == this.Operadora.Codigo;
+        }
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
     }
 }
 

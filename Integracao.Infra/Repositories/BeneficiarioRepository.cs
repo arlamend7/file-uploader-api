@@ -1,54 +1,61 @@
-﻿using Integracao.Domain.Beneficiarios.Entities;
+﻿using Integracao.Domain.Base.Repositories;
+using Integracao.Domain.Beneficiarios.Entities;
+using Integracao.Domain.Operadoras.Enums;
 using System.Data;
 using System.Data.SQLite;
 
 namespace Integracao.Infra.Repositories
 {
-    public class BeneficiarioRepository
+    public class BeneficiarioRepository : IRepository
     {
         private readonly SQLiteConnection _connection;
+        private readonly IQueryRepository _queryRepository;
 
-        public BeneficiarioRepository(SQLiteConnection connection)
+        public BeneficiarioRepository(SQLiteConnection connection, IQueryRepository queryRepository)
         {
             _connection = connection;
+            _queryRepository = queryRepository;
         }
-        public void Insert(IEnumerable<object> beneficiarios)
+        public void Insert(IEnumerable<object> beneficiarios, OperadoraEnum operadora)
         {
-            var beneficiariosList = beneficiarios as IEnumerable<Beneficiario>;
+            var query = _queryRepository.Query<Beneficiario>()
+                                  .Where(x => x.Operadora.Codigo == (int)operadora);
 
-            string qry = @"insert into Beneficiario(DataNascimento,Sexo,CodigoParentesco,
-                           NomeDaMae,Nome,NumeroCNS,CPF,Carteirinha
-                           ,Empresa,RazaoSocial,Codigo,LocalEmpresa
-                           ,Produto,Plano,Setor,DataMaxPermanencia,DataInativo,Remido,
-                           TipoBeneficiario,TipoSegurado,Permanencia,InicioPlano,FimPlano,
-                           Acomodacao,GrupoFamiliar)\n VALUES ";
+            var beneficiariosList = beneficiarios.Select(x => x as Beneficiario).Except(query);
+            if (!beneficiariosList.Any()) return;
+
+            string qry = @"insert into Beneficiario(DataNascimento,Sexo,Parentesco,NomeDaMae,Nome,NumeroCNS,CPF,Codigo,Remido,IsDependente,CPFTitular)\n VALUES ";
 
             qry += string.Join(",\n", beneficiariosList.Select(x =>
             $"('{x.DataNascimento.ToString("yyyy-MM-dd HH:mm:ssss")}'," +
-            $"'{x.Sexo}'," +
+            $"'{(char)x.Sexo}'," +
             $"'{(int)x.Parentesco}'," +
             $"'{x.NomeDaMae}'," +
             $"'{x.Nome}'," +
             $"'{x.NumeroCNS}'," +
             $"'{x.CPF}'," +
             $"'{x.Codigo}'," +
-            $"'{x.Remido}'," +
-            $"'{(char)x.IsDependente}'"));
+            $"'{(char)x.Remido}'," +
+            $"'{(char)x.IsDependente}'," +
+            $"'{x.CPFTitular}')"));
 
+              _connection.Open();
+            var transaction = _connection.BeginTransaction();
 
             try
             {
-                _connection.Open();
 
                 SQLiteCommand command = new SQLiteCommand(qry, _connection);
 
                 var result = command.ExecuteNonQuery();
+                transaction.Commit();
                 _connection.Close();
             }
             catch (Exception)
             {
-
-                throw new NotImplementedException();
+                transaction.Rollback();
+                _connection.Close();
+                throw;
             }
 
 

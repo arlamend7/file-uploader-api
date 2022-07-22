@@ -25,7 +25,6 @@ namespace Integracao.IOC
 
             services.AddSingleton(factory => DbConfig.CreateSession<EventosMap>(configuration.GetSection("DatabaseConn:Path").Value));
 
-            services.AddScoped<BeneficiarioRepository>();
             services.AddScoped<SQLiteConnection>(x=> new SQLiteConnection(conn));
             services.AddScoped(factory => factory.GetService<ISessionFactory>().OpenSession());
 
@@ -36,6 +35,11 @@ namespace Integracao.IOC
             services.AddScoped<SulAmericaConverter>();
             services.AddScoped<ConverterFactory>();
 
+            services.Scan(x => x.FromAssembliesOf(typeof(BeneficiarioRepository))
+                                .AddClasses()
+                                .AsSelf()
+                                .AsImplementedInterfaces()
+                                .WithScopedLifetime());
 
         }
 

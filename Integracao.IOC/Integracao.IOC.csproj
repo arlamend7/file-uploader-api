@@ -12,6 +12,7 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
     <PackageReference Include="NHibernate" Version="5.3.12" />
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.116" />
+    <PackageReference Include="Scrutor.AspNetCore" Version="3.3.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,4 +23,7 @@
     <ProjectReference Include="..\Integracao.Domain\Integracao.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Scrutor.AspNetCore" />
+  </ItemGroup>
 </Project>

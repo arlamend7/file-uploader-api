@@ -7,12 +7,13 @@ using Integracao.Domain.Beneficiarios.Entities;
 using Integracao.Domain.Beneficiarios.Enumeradores;
 using Integracao.Domain.Operadoras.Entities;
 using Integracao.Domain.Planos.Entidades;
+using Microsoft.VisualBasic.FileIO;
 
 namespace Integracao.Conversores.Sul_America.Beneficiarios
 {
     public class BeneficiarioConverter
     {
-        private static readonly List<Type> types = new List<Type>()
+        private static readonly List<Type> types = new()
             {
                 typeof(Plano),
                 typeof(Beneficiario),
@@ -44,7 +45,12 @@ namespace Integracao.Conversores.Sul_America.Beneficiarios
 
         private static IEnumerable<EntityBase> ConvertLine(string line, IEnumerable<Plano> planos)
         {
-            IEnumerable<string> columns = line.Replace(", 12:00:00 AM", "").Split("," ).Select(x => x.Replace('"', ' ').Replace(@"\", "").Trim());
+            TextFieldParser parser = new(new StringReader(line));
+
+            parser.HasFieldsEnclosedInQuotes = true;
+            parser.SetDelimiters(",");
+
+            var columns = parser.ReadFields();
 
             Plano plano = new ColumnsConverter<Plano>(columns) //insert
                     .Convert(20, x => x.Codigo, long.Parse)
@@ -111,8 +117,8 @@ namespace Integracao.Conversores.Sul_America.Beneficiarios
                     })
                     .Convert(30, x => x.DataMaxPermanencia, value => DateTime.Parse(value))
                     .Convert(31, x => x.DataDemissaoOuAposentadoria, value => DateTime.Parse(value))
-                    .SetValue(x => x.Plano, plano)
-                    .SetValue(x => x.Beneficiario, beneficiario)
+                    .SetValue(x => x.CodigoPlano, plano.Codigo)
+                    .SetValue(x => x.CodigoBeneficiario, beneficiario.Codigo)
                     .Result;
 
             List<EntityBase> lista =  new()

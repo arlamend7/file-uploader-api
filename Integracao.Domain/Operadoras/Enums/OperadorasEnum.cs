@@ -1,8 +1,8 @@
 ﻿namespace Integracao.Domain.Operadoras.Enums
 {
-    public enum OperadorasEnum
+    public enum OperadoraEnum
     {
-        SulAmerica,
+        SulAmerica = 1,
         Amil
     }
 }

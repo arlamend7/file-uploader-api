@@ -19,6 +19,10 @@
 
   <ItemGroup>
     <Folder Include="Base\Repository\Interfaces\" />
+    <Folder Include="Extensions\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Extensions\" />
+  </ItemGroup>
 </Project>

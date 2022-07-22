@@ -1,7 +1,6 @@
 ﻿using Integracao.Domain.Base.Repositories;
-using Integracao.Domain.Beneficiarios.Entities;
 using Integracao.Domain.Eventos.Entities;
-using System.Data.Common;
+using Integracao.Domain.Operadoras.Enums;
 using System.Data.SQLite;
 
 namespace Integracao.Infra.Repositories
@@ -9,61 +8,68 @@ namespace Integracao.Infra.Repositories
     public class EventoRepository : IRepository
     {
         private readonly SQLiteConnection _connection;
+        private readonly IQueryRepository _queryRepository;
 
-        public EventoRepository(SQLiteConnection connection)
+        public EventoRepository(SQLiteConnection connection, IQueryRepository queryRepository)
         {
             _connection = connection;
+            _queryRepository = queryRepository;
         }
 
-        public void Insert(IEnumerable<object> eventos)
+        public void Insert(IEnumerable<object> eventos, OperadoraEnum operadora)
         {
-            var eventosList = eventos as IEnumerable<Evento>;
 
-            string qry = @"insert into Evento(IdentificadorOperadora,NomePrestador,CnpjPrestador,PrestadorPrincipal,CrmResponsavel,CrmSolicitante,CrmExecutante,ServicoId
-                         ,Atendimento, CategoriaAtendimento, DescricaoPosicaoPrestador, ValorApresentado, ValorPago, ValorCoparticipacao, ValorEmpresa, ValorNaoReembolsado
-                         ,DataAtendimento,QtdServicoCobrado, QtdServicoPago, DescInternacao, IdentificadorPagamento,OperadoraId,CodigoServicoPrincipal,DescricaoServicoPrincipal
-                         ,CodigoServico,DescricaoServico,CodigoBeneficiario) \n VALUES ";
+            var eventosList = eventos.Select(x => x as Evento);
 
-            qry += string.Join(",\n", eventosList.Select(x =>
-              $"('{x.IdentificadorExterno}'," +
-              $"'{x.NomePrestador}'," +
-              $"'{x.CnpjPrestador}'," +
-              $"'{x.PrestadorPrincipal}'," +
-              $"'{x.CrmResponsavel}'," +
-              $"'{x.CrmSolicitante}'," +
-              $"'{x.CrmExecutante}'," +
-              $"'{x.CodigoServico}'," +
-              $"'{x.Atendimento}'," +
-              $"'{x.CategoriaAtendimento}'," +
-              $"'{x.DescricaoPosicaoPrestador}'," +
-              $"'{x.ValorApresentado}'," +
-              $"'{x.ValorPago}'," +
-              $"'{x.ValorCoparticipacao}'," +
-              $"'{x.ValorEmpresa}'," +
-              $"'{x.ValorNaoReembolsado}'," +
-              $"'{x.DataAtendimento}'," +
-              $"'{x.QtdServicoCobrado}'," +
-              $"'{x.QtdServicoPago}'," +
-              $"'{x.DescInternacao}'," +
-              $"'{x.Operadora.Codigo}'," +
-              $"'{x.CodigoServicoPrincipal}'," +
-              $"'{x.DescricaoServicoPrincipal}'," +
-              $"'{x.CodigoServico}'," +
-              $"'{x.DescricaoServico}'," +
-              $"'{x.CodigoBeneficiario}')"));
+            string qry = @"insert into Evento(NomePrestador,CNPJPrestador,CNJPrestadorPrincipal,CrmResponsavel,CrmSolicitante,CrmExecutante,Atendimento,CategoriaAtendimento,
+                           PosicaoPrestador,ValorApresentado,ValorPago,ValorCoparticipacao,ValorEmpresa,ValorNaoReembolsado,
+                           DataAtendimento,DataInternacao,QtdServicoCobrado,QtdServicoPago,DescInternacao,IdentificadorPagamento,
+                            BeneficiarioId,PlanoId,CodigoDocumento,CodigoGrupoEstatico,NumeroLote,NumeroGuia,TipoGuia,ServicoId,OperadoraId) \n VALUES ";
 
+            qry += string.Join(",\n", eventosList.Select(x => 
+            $"('{x.NomePrestador}'," +
+            $"'{x.CNPJPrestador}'," +
+            $"'{x.CrmResponsavel}'," +
+            $"'{x.CrmSolicitante}'," +
+            $"'{x.CrmExecutante}'," +
+            $"'{x.Atendimento}'," +
+            $"'{x.CategoriaAtendimento}'," +
+            $"'{x.PosicaoPrestador}'," +
+            $"'{x.ValorApresentado}'," +
+            $"'{x.ValorPago}'," +
+            $"'{x.ValorCoparticipacao}'," +
+            $"'{x.ValorEmpresa}'," +
+            $"'{x.ValorNaoReembolsado}'," +
+            $"'{x.DataAtendimento:yyyy-MM-dd HH:mm:ssss}'," +
+            $"'{x.DataInternacao?.ToString("yyyy-MM-dd HH:mm:ssss")}'," +
+            $"'{x.QtdServicoCobrado}'," +
+            $"'{x.QtdServicoPago}'," +
+            $"'{x.DescInternacao}'," +
+            $"'{x.IdentificadorPagamento}'," +
+            $"'{x.CodigoBeneficiario}'," +
+            $"'{x.CodigoPlano}'," +
+            $"'{x.CodigoDocumento}'," +
+            $"'{x.CodigoGrupoEstatico}'," +
+            $"'{x.NumeroLote}'," +
+            $"'{x.TipoGuia}'," +
+            $"'{x.Servico.Codigo}'," +
+            $"'{x.Operadora.Codigo}')"));
+
+             _connection.Open();
+            var transaction = _connection.BeginTransaction();
             try
             {
-                _connection.Open();
                 SQLiteCommand command = new SQLiteCommand(qry, _connection);
 
                 var result = command.ExecuteNonQuery();
+                transaction.Commit();
                 _connection.Close();
             }
             catch (Exception)
             {
-
-                throw new NotImplementedException();
+                transaction.Rollback();
+                _connection.Close();
+                throw;
             }
 
         }

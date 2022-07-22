@@ -39,10 +39,11 @@ namespace Integracao.Controllers
 
         [HttpPost("import")]
         [AllowAnonymous]
-        public IActionResult Insert([FromForm] ClasseArquivoEnum fileName)
+        public IActionResult Insert([FromForm] ClasseArquivoEnum classe)
         {
-            Stream file = Request.Form.Files[0].OpenReadStream();
-            var result = _importacaoAppService.ImportarArquivos(fileName, file, OperadorasEnum.SulAmerica);
+            var file = Request.Form.Files[0];
+
+            var result = _importacaoAppService.ImportarArquivos(file.FileName, classe, file.OpenReadStream(), OperadoraEnum.SulAmerica);
             return Ok(result);
         }
     }

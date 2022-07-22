@@ -16,6 +16,7 @@ namespace Integracao.Conversores.Sul_America.Eventos
         private static readonly List<Type> types = new List<Type>()
             {
                 typeof(Evento),
+                typeof(Servico)
             };
 
         public static FileConverterResult Convert(Stream file, out IEnumerable<Type> types)
