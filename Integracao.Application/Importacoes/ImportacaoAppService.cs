@@ -23,12 +23,14 @@ namespace Integracao.Application.Importacoes
             _manipulationRepository = manipulationRepository;
         }
 
-        public FileConverterResult ImportarArquivos(string fileName, ClasseArquivoEnum nomeArquivo, Stream arquivo, OperadoraEnum operadora)
+        public FileConverterResult ImportarArquivos(string fileName, ClasseArquivoEnum nomeArquivo, Stream arquivo, OperadoraEnum operadora, int month, int year)
         {
-            Importacao entity = new(fileName, arquivo.Length, nomeArquivo, operadora);
+            Importacao entity = new(fileName, arquivo.Length, nomeArquivo, operadora, month, year);
+
 
             _manipulationRepository.Insert(new Operadora(1, "SulAmerica"));
-            _manipulationRepository.Insert(entity);
+
+            var id = _manipulationRepository.Insert(entity);
 
 
             FileConverterResult result = _converterFactory

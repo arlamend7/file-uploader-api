@@ -3,8 +3,8 @@ namespace Integracao.Domain.Importacoes.Enumeradores
 {
 	public enum ClasseArquivoEnum
 	{
-		Beneficiario,
-		Eventos
+		Beneficiario =1,
+		Eventos = 2
 	}
 }
 

@@ -64,7 +64,7 @@ namespace Integracao.Conversores.Sul_America.Eventos
                         .Convert(26, x => x.Codigo, long.Parse)
                         .Convert(27, x => x.Descricao)
                         .SetValue(x => x.Operadora, Operadora.SulAmerica)
-                        .SetValue(x => x.Principal, servicoPrincipal.Codigo != default ? servicoPrincipal : null)
+                        //.SetValue(x => x.Principal, servicoPrincipal.Codigo != default ? servicoPrincipal : null)
                         .Result;
 
             

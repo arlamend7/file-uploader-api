@@ -24,7 +24,7 @@ namespace Integracao.Infra.Repositories
             string qry = @"insert into Evento(NomePrestador,CNPJPrestador,CNJPrestadorPrincipal,CrmResponsavel,CrmSolicitante,CrmExecutante,Atendimento,CategoriaAtendimento,
                            PosicaoPrestador,ValorApresentado,ValorPago,ValorCoparticipacao,ValorEmpresa,ValorNaoReembolsado,
                            DataAtendimento,DataInternacao,QtdServicoCobrado,QtdServicoPago,DescInternacao,IdentificadorPagamento,
-                            BeneficiarioId,PlanoId,CodigoDocumento,CodigoGrupoEstatico,NumeroLote,NumeroGuia,TipoGuia,ServicoId,OperadoraId) \n VALUES ";
+                            BeneficiarioId,PlanoId,CodigoDocumento,CodigoGrupoEstatico,NumeroLote,NumeroGuia,TipoGuia,ServicoId,OperadoraId)\n VALUES ";
 
             qry += string.Join(",\n", eventosList.Select(x => 
             $"('{x.NomePrestador}'," +

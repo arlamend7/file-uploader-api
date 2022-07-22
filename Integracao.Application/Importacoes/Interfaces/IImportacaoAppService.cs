@@ -6,6 +6,6 @@ namespace Integracao.Application.Importacoes.Interfaces
 {
     public interface IImportacaoAppService
     {
-        FileConverterResult ImportarArquivos(string fileName, ClasseArquivoEnum classe, Stream arquivo, OperadoraEnum operadora);
+        FileConverterResult ImportarArquivos(string fileName, ClasseArquivoEnum classe, Stream arquivo, OperadoraEnum operadora, int month, int year);
     }
 }

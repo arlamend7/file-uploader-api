@@ -3,6 +3,6 @@
     public enum OperadoraEnum
     {
         SulAmerica = 1,
-        Amil
+        Amil = 2
     }
 }

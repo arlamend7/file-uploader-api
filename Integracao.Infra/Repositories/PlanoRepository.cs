@@ -23,8 +23,9 @@ namespace Integracao.Infra.Repositories
             var queryPlanos = _queryRepository.Query<Plano>()
                                               .Where(x => x.Operadora.Codigo == (int)operadora);
 
-            var planosList = planos.Select(x => x as Plano)
-                                   .Except(queryPlanos);
+
+            var planosList = planos.Select(x => x as Plano);
+                                  
 
             if (!planosList.Any()) return;
 

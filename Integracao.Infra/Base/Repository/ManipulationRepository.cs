@@ -14,8 +14,8 @@ namespace Integracao.Infra.Base.Repository
 
         public virtual long Insert<T>(T entity) where T : EntityBase
         {
-   
-            return (long)_session.Save(entity);
+            var id = (long)_session.Save(entity);
+            return id;
         }
 
     }
