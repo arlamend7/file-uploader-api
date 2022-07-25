@@ -1,28 +1,26 @@
-﻿using System.Globalization;
-using Integracao.Conversores.Base.Entities;
+﻿using Integracao.Conversores.Base.Entities;
 using Integracao.Conversores.Base.Exceptions;
+using Integracao.Conversores.Base.Interfaces;
 using Integracao.Core.Base.Entities;
-using Integracao.Domain.Beneficiarios.Entities;
 using Integracao.Domain.Eventos.Entities;
+using Integracao.Domain.Importacoes.Entities;
 using Integracao.Domain.Operadoras.Entities;
-using Integracao.Domain.Planos.Entidades;
 using Integracao.Domain.Servicos.Entidades;
 using Microsoft.VisualBasic.FileIO;
 
 namespace Integracao.Conversores.Sul_America.Eventos
 {
-    public class EventoConverter
+    public class EventoConverter : IOperadoraFileConverter
     {
-        private static readonly List<Type> types = new List<Type>()
+
+        public IEnumerable<Type> OutTypes => new List<Type>()
             {
                 typeof(Evento),
                 typeof(Servico)
             };
 
-        public static FileConverterResult Convert(Stream file, out IEnumerable<Type> types)
+        public FileConverterResult Convert(Stream file, Importacao importacao)
         {
-            types = EventoConverter.types;
-
             StreamReader sr = new(file);
             string[] lines = sr.ReadToEnd().Split("\n");
 
@@ -30,46 +28,39 @@ namespace Integracao.Conversores.Sul_America.Eventos
 
             for (int i = 1; i < lines.Length - 1; i++)
             {
-                try
-                {
-                    if (i == 230) i = 230;
-                    result.Sucessos.AddRange(ConvertLine(lines[i], result));
-                }
-                catch (FileConverterColumnException ex)
-                {
-                    result.Erros.Add(new FileConverterLineException(i, ex));
-                }
+                var line = lines[i];
+                result.Rows.AddRange(ConvertLine(i, line, importacao, result));
             }
 
             return result;
         }
 
-        private static IEnumerable<EntityBase> ConvertLine(string line, FileConverterResult result)
+        private static IEnumerable<FileTypeRowConvertResult> ConvertLine(int indexLine, string line, Importacao importacao, FileConverterResult result)
         {
-            TextFieldParser parser = new(new StringReader(line));
+            string[] columns = new TextFieldParser(new StringReader(line))
+            {
+                HasFieldsEnclosedInQuotes = true,
+                Delimiters = new string[] { "," }
+            }.ReadFields();
 
-            parser.HasFieldsEnclosedInQuotes = true;
-            parser.SetDelimiters(",");
-
-            var columns = parser.ReadFields();
-
-
-            var servicoPrincipal = new ColumnsConverter<Servico>(columns)
+            var servicoPrincipal = new FileColumnsConverter<Servico>(indexLine, columns)
                         .Convert(24, x => x.Codigo, long.Parse)
                         .Convert(25, x => x.Descricao)
                         .SetValue(x => x.Operadora, Operadora.SulAmerica)
+                        .SetValue(x => x.Importacao, importacao)
                         .Result;
 
-            var servico = new ColumnsConverter<Servico>(columns)
+            var servico = new FileColumnsConverter<Servico>(indexLine, columns)
                         .Convert(26, x => x.Codigo, long.Parse)
                         .Convert(27, x => x.Descricao)
                         .SetValue(x => x.Operadora, Operadora.SulAmerica)
-                        //.SetValue(x => x.Principal, servicoPrincipal.Codigo != default ? servicoPrincipal : null)
+                        .SetValue(x => x.Principal, servicoPrincipal.Entity.Codigo != default ? servicoPrincipal.Entity : null)
+                        .SetValue(x => x.Importacao, importacao)
                         .Result;
 
             
-            var evento = new ColumnsConverter<Evento>(columns)
-                            .Convert(9, x => x.CodigoBeneficiario, long.Parse)
+            var evento = new FileColumnsConverter<Evento>(indexLine, columns)
+                            .Convert(09, x => x.CodigoBeneficiario, long.Parse)
                             .Convert(13, x => x.CodigoPlano, long.Parse)
                             .Convert(17, x => x.NomePrestador)
                             .Convert(18, x => x.CNPJPrestador, long.Parse)
@@ -95,11 +86,13 @@ namespace Integracao.Conversores.Sul_America.Eventos
                             .Convert(48, x => x.NumeroLote, x => x != "0" ? long.Parse(x) : null)
                             .Convert(49, x => x.NumeroGuia, long.Parse)
                             .Convert(50, x => x.TipoGuia, x => x != "0" ? x[0] : null)
-                            .SetValue(x => x.Servico, servico)
+                            .SetValue(x => x.Servico, servico.Entity)
+                            .SetValue(x => x.Importacao, importacao)
+
                             .Result;
 
 
-            var lista =  new List<EntityBase>() {
+            var lista =  new List<FileTypeRowConvertResult>() {
                 evento
             };
 
@@ -109,9 +102,9 @@ namespace Integracao.Conversores.Sul_America.Eventos
             return lista;
         }
 
-        private static bool ServicoExistente(Servico servicoPesquisa, FileConverterResult result)
+        private static bool ServicoExistente(FileTypeRowConvertResult<Servico> servicoPesquisa, FileConverterResult result)
         {
-            return servicoPesquisa.Codigo == 0 || result.Sucessos.Any(x => x is Servico servico && servicoPesquisa.Codigo == servico.Codigo);
+            return servicoPesquisa.Entity.Codigo == 0 || result.Rows.Any(x => x is FileTypeRowConvertResult<Servico> servico && servicoPesquisa.Entity.Codigo == servico.Entity.Codigo);
         }
     }
 }

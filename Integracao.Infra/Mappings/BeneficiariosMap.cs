@@ -21,7 +21,8 @@ namespace Integracao.Infra.Mappings
             Map(x => x.Parentesco);
             Map(x => x.Remido);
             Map(x => x.IsDependente);
-            
+            References(x => x.Importacao).Column("ImportacaoId");
+
         }
     }
 }

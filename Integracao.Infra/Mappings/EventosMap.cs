@@ -38,11 +38,8 @@ namespace Integracao.Infra.Mappings
             Map(x => x.TipoGuia);
             
 
-            //References(x => x.Servico).Column("ServicoId");
-            References(x => x.Operadora).Column("OperadoraId");
-
-            
-
+            References(x => x.Servico).Columns("ServicoId", "OperadoraId");
+            References(x => x.Importacao).Column("ImportacaoId");
         }
     }
 }

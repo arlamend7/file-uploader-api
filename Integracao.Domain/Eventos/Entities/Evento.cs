@@ -1,4 +1,5 @@
 ﻿using Integracao.Core.Base.Entities;
+using Integracao.Domain.Importacoes.Entities;
 using Integracao.Domain.Operadoras.Entities;
 using Integracao.Domain.Servicos.Entidades;
 
@@ -8,7 +9,6 @@ namespace Integracao.Domain.Eventos.Entities
     {
         public virtual long CodigoBeneficiario { get; set; }
         public virtual long CodigoPlano { get; set; }
-        public virtual Operadora Operadora { get; set; }
         public virtual Servico Servico { get; set; }
         public virtual string NomePrestador { get; set; }
         public virtual long CNPJPrestador { get; set; }
@@ -35,6 +35,8 @@ namespace Integracao.Domain.Eventos.Entities
         public virtual long? NumeroLote { get; set; }
         public virtual long NumeroGuia { get; set; }
         public virtual char? TipoGuia { get; set; }
+        public virtual Importacao Importacao { get; set; }
+
 
         public Evento()
         {

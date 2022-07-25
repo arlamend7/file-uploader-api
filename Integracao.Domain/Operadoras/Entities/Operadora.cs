@@ -17,11 +17,15 @@ namespace Integracao.Domain.Operadoras.Entities
             Descricao = descricao;
         }
 
+        public override string ToString()
+        {
+            return Descricao;
+        }
         public static Operadora SulAmerica = new SulAmericaOperadora();
 
         private class SulAmericaOperadora : Operadora
         {
-            public SulAmericaOperadora() : base(1, "sulamerica")
+            public SulAmericaOperadora() : base(1, "SulAmerica")
             {
 
             }

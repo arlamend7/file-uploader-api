@@ -21,10 +21,11 @@ namespace Integracao.Infra.Repositories
             string qry = "insert into Plano(Descricao,OperadoraId,PlanoId)\n VALUES ";
 
             var queryPlanos = _queryRepository.Query<Plano>()
-                                              .Where(x => x.Operadora.Codigo == (int)operadora);
+                                              .Where(x => x.Operadora.Codigo == (int)operadora)
+                                              .ToList();
 
 
-            var planosList = planos.Select(x => x as Plano);
+            var planosList = planos.Select(x => x as Plano).Except(queryPlanos);
                                   
 
             if (!planosList.Any()) return;
@@ -38,11 +39,9 @@ namespace Integracao.Infra.Repositories
             var transaction = _connection.BeginTransaction();
             try
             {
-
                 SQLiteCommand command = new SQLiteCommand(qry, _connection);
 
                 var result = command.ExecuteNonQuery();
-
 
                 transaction.Commit();
                 _connection.Close();

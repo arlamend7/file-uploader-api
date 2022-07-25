@@ -1,4 +1,7 @@
-﻿using Integracao.Application.Importacoes.Interfaces;
+﻿using Integracao.Application.Importacoes.DatasTransfer.Requests;
+using Integracao.Application.Importacoes.DatasTransfer.Responses;
+using Integracao.Application.Importacoes.Interfaces;
+using Integracao.Conversores.Base.Entities;
 using Integracao.Domain.Base.Repositories;
 using Integracao.Domain.Importacoes.Enumeradores;
 using Integracao.Domain.Operadoras.Enums;
@@ -30,20 +33,23 @@ namespace Integracao.Controllers
             return Ok();
         }
 
-        [HttpPost("validate")]
-        public IActionResult Validate([FromForm] string fileName)
-        {
-            return Ok();
-        }
-
-
         [HttpPost("import")]
         [AllowAnonymous]
-        public IActionResult Insert([FromForm] ClasseArquivoEnum classe)
+        public IActionResult Insert([FromForm] FileImportInsertRequest request)
         {
-            var file = Request.Form.Files[0];
+            IFormFile file = Request.Form.Files[0];
 
-            var result = _importacaoAppService.ImportarArquivos(file.FileName, classe, file.OpenReadStream(), OperadoraEnum.SulAmerica);
+            Guid result = _importacaoAppService.InsertValuesFile(file.FileName, file.OpenReadStream(), request);
+            return Ok(result);
+        }
+
+        [HttpPost("validate")]
+        [AllowAnonymous]
+        public IActionResult Validate([FromForm] FileImportInsertRequest request)
+        {
+            IFormFile file = Request.Form.Files[0];
+
+            var result = _importacaoAppService.ValidateFile(file.OpenReadStream(), request);
             return Ok(result);
         }
     }

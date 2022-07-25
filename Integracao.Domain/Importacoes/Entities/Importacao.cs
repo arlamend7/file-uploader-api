@@ -1,6 +1,5 @@
 ﻿using Integracao.Core.Base.Entities;
 using Integracao.Domain.Importacoes.Enumeradores;
-using Integracao.Domain.Operadoras.Entities;
 using Integracao.Domain.Operadoras.Enums;
 
 namespace Integracao.Domain.Importacoes.Entities
@@ -15,17 +14,25 @@ namespace Integracao.Domain.Importacoes.Entities
             Operadora = operadora;
             Year = year;
             Month = month;
+            Identifier = Guid.NewGuid();
+            InsertDate = DateTime.Now;
         }
 
-        protected Importacao()
+        public Importacao()
         {
 
+        }
+
+        public override string ToString()
+        {
+            return $"{Month}/{Year}";
         }
         public virtual string NomeArquivo { get; set; }
         public virtual long Tamanho { get; set; }
         public virtual ClasseArquivoEnum Classe { get; set; }
         public virtual OperadoraEnum Operadora { get; set; }
-        public virtual DateTime InsertDate { get; set; } = DateTime.Now;
+        public virtual DateTime InsertDate { get; set; }
+        public virtual Guid Identifier { get; set; }
         public virtual int Year { get; set; }
         public virtual int Month { get; set; }
     }

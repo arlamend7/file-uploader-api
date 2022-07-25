@@ -12,6 +12,8 @@ namespace Integracao.Infra.Mappings
                 .KeyProperty(x => x.Codigo, "PlanoId")
                 .KeyReference(x => x.Operadora, "OperadoraId");
             Map(x => x.Descricao);
+            References(x => x.Importacao).Column("ImportacaoId");
+
         }
     }
 }

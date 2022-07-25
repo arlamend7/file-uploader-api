@@ -1,7 +1,6 @@
-﻿using System;
-using Integracao.Core.Base.Entities;
+﻿using Integracao.Core.Base.Entities;
+using Integracao.Domain.Importacoes.Entities;
 using Integracao.Domain.Operadoras.Entities;
-using Integracao.Domain.Planos.Entidades;
 
 namespace Integracao.Domain.Servicos.Entidades
 {
@@ -9,6 +8,8 @@ namespace Integracao.Domain.Servicos.Entidades
 	{
         public virtual Operadora Operadora { get; set; }
         public virtual string Descricao { get; set; }
+        public virtual Servico Principal { get; set; }
+        public virtual Importacao Importacao { get; set; }
 
 
         public override bool Equals(object obj)
@@ -19,6 +20,10 @@ namespace Integracao.Domain.Servicos.Entidades
         public override int GetHashCode()
         {
             return base.GetHashCode();
+        }
+        public override string ToString()
+        {
+            return Descricao;
         }
     }
 }
