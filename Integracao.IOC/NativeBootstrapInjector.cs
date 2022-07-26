@@ -25,7 +25,7 @@ namespace Integracao.IOC
 
             services.AddSingleton(factory => DbConfig.CreateSession<EventosMap>(configuration.GetSection("DatabaseConn:Path").Value));
 
-            services.AddScoped<SQLiteConnection>(x=> new SQLiteConnection(configuration.GetSection("DatabaseConn:Path").Value));
+            services.AddScoped<SQLiteConnection>(x=> new SQLiteConnection(conn));
             services.AddScoped(factory => factory.GetService<ISessionFactory>().OpenSession());
 
             //services.AddAutoMapper(typeof(PeopleProfile).GetTypeInfo().Assembly);
