@@ -1,28 +1,27 @@
-﻿using System;
-using Integracao.Conversores.Base.Exceptions;
-using Integracao.Core.Base.Entities;
+﻿using Integracao.Core.Base.Entities;
 
 namespace Integracao.Conversores.Base.Entities
 {
 	public class FileConverterResult
 	{
-        public List<EntityBase> Sucessos { get; set; }
-        public List<FileConverterLineException> Erros { get; set; }
-        public bool Sucesso => !Erros.Any();
+        public List<FileTypeRowConvertResult> Rows { get; }
+        public bool Sucesso => !Rows.Any(x => x.Error);
         public FileConverterResult()
         {
-            Sucessos = new List<EntityBase>();
-            Erros = new List<FileConverterLineException>();
+            Rows = new List<FileTypeRowConvertResult>();
         }
 
-        public IEnumerable<T> Get<T>() where T : EntityBase
+        public IEnumerable<T> Get<T>() where T : EntityBase, new()
         {
-            return Sucessos.Where(x => x is T).Select(x => x as T);
+            return Rows.Where(x => x is FileTypeRowConvertResult<T>)
+                       .Select(x => x.Object as T);
         }
 
         public IEnumerable<object> Get(Type type)
         {
-            return Sucessos.Where(x => type.IsAssignableTo(x.GetType()));
+            var typeGeneric = typeof(FileTypeRowConvertResult<>).MakeGenericType(type);
+            return Rows.Where(x => typeGeneric.IsAssignableTo(x.GetType()))
+                       .Select(x => x.Object);
         }
     }
 

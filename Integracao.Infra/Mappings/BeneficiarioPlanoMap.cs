@@ -22,7 +22,8 @@ namespace Integracao.Infra.Mappings
             Map(x => x.IsDemitidoOuAposentado);
             Map(x => x.RazaoSocial);
             Map(x => x.CodigoEmpresa);
-         
+            References(x => x.Importacao).Column("ImportacaoId");
+
 
         }
     }

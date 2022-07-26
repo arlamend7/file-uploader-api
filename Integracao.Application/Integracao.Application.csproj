@@ -10,4 +10,20 @@
     <ProjectReference Include="..\Integracao.Infra\Integracao.Infra.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Importacoes\Services\" />
+    <None Remove="Importacoes\Services\Interfaces\" />
+    <None Remove="Importacoes\DatasTransfer\" />
+    <None Remove="Importacoes\DatasTransfer\Requests\" />
+    <None Remove="Importacoes\DatasTransfer\Responses\" />
+    <None Remove="Importacoes\Profiles\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Importacoes\Services\" />
+    <Folder Include="Importacoes\Services\Interfaces\" />
+    <Folder Include="Importacoes\DatasTransfer\" />
+    <Folder Include="Importacoes\DatasTransfer\Requests\" />
+    <Folder Include="Importacoes\DatasTransfer\Responses\" />
+    <Folder Include="Importacoes\Profiles\" />
+  </ItemGroup>
 </Project>

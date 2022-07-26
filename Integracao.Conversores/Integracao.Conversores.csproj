@@ -11,12 +11,13 @@
 
   <ItemGroup>
     <None Remove="Base\Entities\" />
-    <None Remove="Base\Delegates\" />
     <None Remove="Base\Exceptions\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Base\Entities\" />
-    <Folder Include="Base\Delegates\" />
     <Folder Include="Base\Exceptions\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Base\Delegates\ConversorDelegates.cs" />
   </ItemGroup>
 </Project>

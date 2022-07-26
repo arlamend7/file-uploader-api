@@ -1,4 +1,4 @@
-﻿using Integracao.Conversores.Base.Delegates;
+﻿using Integracao.Conversores.Base.Entities;
 using Integracao.Domain.Importacoes.Enumeradores;
 
 namespace Integracao.Conversores.Base.Interfaces
@@ -6,6 +6,6 @@ namespace Integracao.Conversores.Base.Interfaces
 
     public interface IOperadoraConverter
     {
-        FileConvert IdentificaArquivo(ClasseArquivoEnum arquivo);
+        IOperadoraFileConverter IdentificaArquivo(ClasseArquivoEnum arquivo);
     }
 }

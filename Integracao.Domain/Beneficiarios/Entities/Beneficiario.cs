@@ -1,6 +1,7 @@
 ﻿using Integracao.Core.Base.Entities;
 using Integracao.Domain.Base.Enumeradores;
 using Integracao.Domain.Beneficiarios.Enumeradores;
+using Integracao.Domain.Importacoes.Entities;
 using Integracao.Domain.Operadoras.Entities;
 
 namespace Integracao.Domain.Beneficiarios.Entities
@@ -18,6 +19,7 @@ namespace Integracao.Domain.Beneficiarios.Entities
         public virtual SimNaoEnum Remido { get; set; }
         public virtual SimNaoEnum IsDependente { get; set; }
         public virtual Operadora Operadora { get; set; }
+        public virtual Importacao Importacao { get; set; }
 
         public override bool Equals(object obj)
         {
@@ -28,6 +30,11 @@ namespace Integracao.Domain.Beneficiarios.Entities
         public override int GetHashCode()
         {
             return base.GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            return Codigo.ToString();
         }
     }
 
